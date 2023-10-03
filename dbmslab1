@@ -1,0 +1,71 @@
+CREATE TABLE department (
+d_no INT PRIMARY KEY,
+name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE employee (
+ssn INT PRIMARY KEY,
+f_name VARCHAR(255) NOT NULL,
+l_name VARCHAR(255) NOT NULL,
+gender CHAR(1) NOT NULL,
+address VARCHAR(255),
+dob DATE NOT NULL,
+salary DECIMAL(10, 2) NOT NULL,
+supervisor INT,
+d_no INT,
+FOREIGN KEY (supervisor) REFERENCES employee(ssn),
+FOREIGN KEY (d_no) REFERENCES department(d_no)
+);
+
+CREATE TABLE manages (
+m_essn INT,
+manager_start_date DATE,
+d_no INT,
+PRIMARY KEY (m_essn, manager_start_date, d_no),
+FOREIGN KEY (m_essn) REFERENCES employee(ssn),
+FOREIGN KEY (d_no) REFERENCES department(d_no)
+);
+
+CREATE TABLE department_location (
+d_no INT,
+location VARCHAR(255),
+PRIMARY KEY (d_no, location),
+FOREIGN KEY (d_no) REFERENCES department(d_no)
+);
+
+CREATE TABLE project (
+p_no INT PRIMARY KEY,
+d_no INT,
+p_name VARCHAR(255) NOT NULL,
+worth DECIMAL(10, 2),
+end_date DATE,
+FOREIGN KEY (d_no) REFERENCES department(d_no)
+);
+
+CREATE TABLE project_location (
+p_no INT,
+location VARCHAR(255),
+FOREIGN KEY (p_no) REFERENCES project(p_no)
+);
+
+CREATE TABLE works_on (
+e_ssn INT,
+p_no INT,
+hrs DECIMAL(5, 2) NOT NULL,
+PRIMARY KEY (e_ssn, p_no),
+FOREIGN KEY (e_ssn) REFERENCES employee(ssn),
+FOREIGN KEY (p_no) REFERENCES project(p_no)
+);
+
+CREATE TABLE dependent (
+e_ssn INT,
+name VARCHAR(255) NOT NULL,
+sex CHAR(1) NOT NULL,
+dob DATE NOT NULL,
+d_no INT,
+relationship VARCHAR(255),
+FOREIGN KEY (e_ssn) REFERENCES employee(ssn),
+FOREIGN KEY (d_no) REFERENCES department(d_no)
+);
+
+
